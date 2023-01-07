@@ -102,6 +102,7 @@ class SketchCanvas extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
+      strokeWidth: nextProps.strokeWidth,
       text: this._processText(
         nextProps.text ? nextProps.text.map((t) => Object.assign({}, t)) : null
       ),
