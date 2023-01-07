@@ -124,11 +124,11 @@ class SketchCanvas extends React.Component {
   }
 
   setStrokeWidth(newStrokeWidth) {
-    strokeWidth = newStrokeWidth;
+    this.setState({ strokeWidth: newStrokeWidth });
   }
 
   setUser(newUser) {
-    user = newUser;
+    this.setState({ user: newUser });
   }
 
   undo() {
