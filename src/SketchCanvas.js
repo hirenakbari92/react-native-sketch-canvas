@@ -25,14 +25,11 @@ const SketchCanvasManager = NativeModules.RNSketchCanvasManager || {};
 class SketchCanvas extends React.Component {
   static propTypes = {
     style: ViewPropTypes.style,
-    strokeColor: PropTypes.string,
-    strokeWidth: PropTypes.number,
     onPathsChange: PropTypes.func,
     onStrokeStart: PropTypes.func,
     onStrokeChanged: PropTypes.func,
     onStrokeEnd: PropTypes.func,
     onSketchSaved: PropTypes.func,
-    user: PropTypes.string,
 
     touchEnabled: PropTypes.bool,
 
@@ -62,14 +59,11 @@ class SketchCanvas extends React.Component {
 
   static defaultProps = {
     style: null,
-    strokeColor: "#000000",
-    strokeWidth: 3,
     onPathsChange: () => {},
     onStrokeStart: () => {},
     onStrokeChanged: () => {},
     onStrokeEnd: () => {},
     onSketchSaved: () => {},
-    user: null,
 
     touchEnabled: true,
 
@@ -93,6 +87,9 @@ class SketchCanvas extends React.Component {
     this._screenScale = Platform.OS === "ios" ? 1 : PixelRatio.get();
     this._offset = { x: 0, y: 0 };
     this._size = { width: 0, height: 0 };
+    this._strokeWidth = 3;
+    this._strokeColor = "black";
+    this._user = null;
     this._initialized = false;
 
     this.state.text = this._processText(
@@ -102,7 +99,6 @@ class SketchCanvas extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      strokeWidth: nextProps.strokeWidth,
       text: this._processText(
         nextProps.text ? nextProps.text.map((t) => Object.assign({}, t)) : null
       ),
@@ -125,17 +121,21 @@ class SketchCanvas extends React.Component {
   }
 
   setStrokeWidth(newStrokeWidth) {
-    this.setState({ strokeWidth: newStrokeWidth });
+    this._strokeWidth = newStrokeWidth;
+  }
+
+  setStrokeColor(newStrokeColor) {
+    this._strokeColor = newStrokeColor;
   }
 
   setUser(newUser) {
-    this.setState({ user: newUser });
+    this._user = newUser;
   }
 
   undo() {
     let lastId = -1;
     this._paths.forEach(
-      (d) => (lastId = d.drawer === this.props.user ? d.path.id : lastId)
+      (d) => (lastId = d.drawer === this._user ? d.path.id : lastId)
     );
     if (lastId >= 0) this.deletePath(lastId);
     return lastId;
@@ -251,8 +251,8 @@ class SketchCanvas extends React.Component {
         this._offset = { x: e.pageX - e.locationX, y: e.pageY - e.locationY };
         this._path = {
           id: parseInt(Math.random() * 100000000),
-          color: this.props.strokeColor,
-          width: this.props.strokeWidth,
+          color: this._strokeColor,
+          width: this._strokeWidth,
           data: [],
         };
 
@@ -313,12 +313,12 @@ class SketchCanvas extends React.Component {
           this.props.onStrokeEnd({
             path: this._path,
             size: this._size,
-            drawer: this.props.user,
+            drawer: this._user,
           });
           this._paths.push({
             path: this._path,
             size: this._size,
-            drawer: this.props.user,
+            drawer: this._user,
           });
         }
         UIManager.dispatchViewManagerCommand(
