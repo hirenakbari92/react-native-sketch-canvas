@@ -31,8 +31,6 @@ class SketchCanvas extends React.Component {
     onStrokeEnd: PropTypes.func,
     onSketchSaved: PropTypes.func,
 
-    touchEnabled: PropTypes.bool,
-
     text: PropTypes.arrayOf(
       PropTypes.shape({
         text: PropTypes.string,
@@ -65,8 +63,6 @@ class SketchCanvas extends React.Component {
     onStrokeEnd: () => {},
     onSketchSaved: () => {},
 
-    touchEnabled: true,
-
     text: null,
     localSourceImage: null,
 
@@ -91,6 +87,7 @@ class SketchCanvas extends React.Component {
     this._strokeColor = "black";
     this._user = null;
     this._initialized = false;
+    this._touchEnabled = false;
 
     this.state.text = this._processText(
       props.text ? props.text.map((t) => Object.assign({}, t)) : null
@@ -130,6 +127,10 @@ class SketchCanvas extends React.Component {
 
   setUser(newUser) {
     this._user = newUser;
+  }
+
+  setTouchEnabled(value) {
+    this._touchEnabled = value;
   }
 
   undo() {
@@ -246,7 +247,7 @@ class SketchCanvas extends React.Component {
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
       onPanResponderGrant: (evt, gestureState) => {
-        if (!this.props.touchEnabled) return;
+        if (!this._touchEnabled) return;
         const e = evt.nativeEvent;
         this._offset = { x: e.pageX - e.locationX, y: e.pageY - e.locationY };
         this._path = {
@@ -283,7 +284,7 @@ class SketchCanvas extends React.Component {
         this.props.onStrokeStart(x, y);
       },
       onPanResponderMove: (evt, gestureState) => {
-        if (!this.props.touchEnabled) return;
+        if (!this._touchEnabled) return;
         if (this._path) {
           UIManager.dispatchViewManagerCommand(
             this._handle,
@@ -308,7 +309,7 @@ class SketchCanvas extends React.Component {
         }
       },
       onPanResponderRelease: (evt, gestureState) => {
-        if (!this.props.touchEnabled) return;
+        if (!this._touchEnabled) return;
         if (this._path) {
           this.props.onStrokeEnd({
             path: this._path,
