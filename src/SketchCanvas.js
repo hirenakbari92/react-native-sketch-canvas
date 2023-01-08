@@ -26,6 +26,7 @@ class SketchCanvas extends React.Component {
   static propTypes = {
     style: ViewPropTypes.style,
     onPathsChange: PropTypes.func,
+    onPanResponderGrant: PropTypes.func,
     onStrokeStart: PropTypes.func,
     onStrokeChanged: PropTypes.func,
     onStrokeEnd: PropTypes.func,
@@ -59,6 +60,7 @@ class SketchCanvas extends React.Component {
     style: null,
     onPathsChange: () => {},
     onStrokeStart: () => {},
+    onPanResponderGrant: () => {},
     onStrokeChanged: () => {},
     onStrokeEnd: () => {},
     onSketchSaved: () => {},
@@ -247,6 +249,8 @@ class SketchCanvas extends React.Component {
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
       onPanResponderGrant: (evt, gestureState) => {
+        this.props.onPanResponderGrant(evt);
+
         if (!this._touchEnabled) return;
         const e = evt.nativeEvent;
         this._offset = { x: e.pageX - e.locationX, y: e.pageY - e.locationY };
