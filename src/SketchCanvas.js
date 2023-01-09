@@ -87,7 +87,7 @@ class SketchCanvas extends React.Component {
     this._screenScale = Platform.OS === "ios" ? 1 : PixelRatio.get();
     this._offset = { x: 0, y: 0 };
     this._size = { width: 0, height: 0 };
-    this._strokeWidth = 3;
+    this._strokeWidth = 2;
     this._strokeColor = "black";
     this._user = null;
     this._initialized = false;
