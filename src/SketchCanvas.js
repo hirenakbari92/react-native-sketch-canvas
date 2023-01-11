@@ -174,6 +174,82 @@ class SketchCanvas extends React.Component {
     }
   }
 
+  createPath(e) {
+    this._offset = { x: e.pageX - e.locationX, y: e.pageY - e.locationY };
+    this._path = {
+      id: parseInt(Math.random() * 100000000),
+      color: this._strokeColor,
+      width: this._strokeWidth,
+      data: [],
+    };
+
+    UIManager.dispatchViewManagerCommand(
+      this._handle,
+      UIManager.RNSketchCanvas.Commands.newPath,
+      [
+        this._path.id,
+        processColor(this._path.color),
+        this._path.width * this._screenScale,
+      ]
+    );
+    UIManager.dispatchViewManagerCommand(
+      this._handle,
+      UIManager.RNSketchCanvas.Commands.addPoint,
+      [
+        parseFloat(
+          (e.locationX - this._offset.x).toFixed(2) * this._screenScale // gestureState.x0
+        ),
+        parseFloat(
+          (e.locationY - this._offset.y).toFixed(2) * this._screenScale // gestureState.y0
+        ),
+      ]
+    );
+    const x = parseFloat((e.locationX - this._offset.x).toFixed(2)), // gestureState.x0
+      y = parseFloat((e.locationY - this._offset.y).toFixed(2)); // gestureState.y0
+    this._path.data.push(`${x},${y}`);
+  }
+
+  updatePath(e) {
+    if (this._path) {
+      UIManager.dispatchViewManagerCommand(
+        this._handle,
+        UIManager.RNSketchCanvas.Commands.addPoint,
+        [
+          parseFloat(
+            (e.locationX - this._offset.x).toFixed(2) * this._screenScale //gestureState.moveX
+          ),
+          parseFloat(
+            (e.locationY - this._offset.y).toFixed(2) * this._screenScale //gestureState.moveY
+          ),
+        ]
+      );
+      const x = parseFloat((e.locationX - this._offset.x).toFixed(2)), //gestureState.moveX
+        y = parseFloat((e.locationY - this._offset.y).toFixed(2)); //gestureState.moveY
+      this._path.data.push(`${x},${y}`);
+      this.props.onStrokeChanged(x, y);
+    }
+  }
+
+  submitPath(e) {
+    if (this._path) {
+      this.props.onStrokeEnd({
+        path: this._path,
+        size: this._size,
+        drawer: this._user,
+      });
+      this._paths.push({
+        path: this._path,
+        size: this._size,
+        drawer: this._user,
+      });
+    }
+    UIManager.dispatchViewManagerCommand(
+      this._handle,
+      UIManager.RNSketchCanvas.Commands.endPath,
+      []
+    );
+  }
+
   deletePath(id) {
     this._paths = this._paths.filter((p) => p.path.id !== id);
     UIManager.dispatchViewManagerCommand(
