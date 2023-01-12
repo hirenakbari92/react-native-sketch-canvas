@@ -197,15 +197,15 @@ class SketchCanvas extends React.Component {
       UIManager.RNSketchCanvas.Commands.addPoint,
       [
         parseFloat(
-          (e.locationX - this._offset.x).toFixed(2) * this._screenScale // gestureState.x0
+          (e.pageX - this._offset.x).toFixed(2) * this._screenScale // gestureState.x0
         ),
         parseFloat(
-          (e.locationY - this._offset.y).toFixed(2) * this._screenScale // gestureState.y0
+          (e.pageY - this._offset.y).toFixed(2) * this._screenScale // gestureState.y0
         ),
       ]
     );
-    const x = parseFloat((e.locationX - this._offset.x).toFixed(2)), // gestureState.x0
-      y = parseFloat((e.locationY - this._offset.y).toFixed(2)); // gestureState.y0
+    const x = parseFloat((e.pageX - this._offset.x).toFixed(2)), // gestureState.x0
+      y = parseFloat((e.pageY - this._offset.y).toFixed(2)); // gestureState.y0
     this._path.data.push(`${x},${y}`);
   }
 
@@ -216,15 +216,15 @@ class SketchCanvas extends React.Component {
         UIManager.RNSketchCanvas.Commands.addPoint,
         [
           parseFloat(
-            (e.locationX - this._offset.x).toFixed(2) * this._screenScale //gestureState.moveX
+            (e.pageX - this._offset.x).toFixed(2) * this._screenScale //gestureState.moveX
           ),
           parseFloat(
-            (e.locationY - this._offset.y).toFixed(2) * this._screenScale //gestureState.moveY
+            (e.pageY - this._offset.y).toFixed(2) * this._screenScale //gestureState.moveY
           ),
         ]
       );
-      const x = parseFloat((e.locationX - this._offset.x).toFixed(2)), //gestureState.moveX
-        y = parseFloat((e.locationY - this._offset.y).toFixed(2)); //gestureState.moveY
+      const x = parseFloat((e.pageX - this._offset.x).toFixed(2)), //gestureState.moveX
+        y = parseFloat((e.pageY - this._offset.y).toFixed(2)); //gestureState.moveY
       this._path.data.push(`${x},${y}`);
       this.props.onStrokeChanged(x, y);
     }
