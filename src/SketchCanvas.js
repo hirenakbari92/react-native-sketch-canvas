@@ -174,6 +174,41 @@ class SketchCanvas extends React.Component {
     }
   }
 
+  createPathAbs(e, offsetX, offsetY) {
+    this._offset = { x: offsetX, y: offsetY };
+    this._path = {
+      id: parseInt(Math.random() * 100000000),
+      color: this._strokeColor,
+      width: this._strokeWidth,
+      data: [],
+    };
+
+    UIManager.dispatchViewManagerCommand(
+      this._handle,
+      UIManager.RNSketchCanvas.Commands.newPath,
+      [
+        this._path.id,
+        processColor(this._path.color),
+        this._path.width * this._screenScale,
+      ]
+    );
+    UIManager.dispatchViewManagerCommand(
+      this._handle,
+      UIManager.RNSketchCanvas.Commands.addPoint,
+      [
+        parseFloat(
+          (e.pageX - this._offset.x).toFixed(2) * this._screenScale // gestureState.x0
+        ),
+        parseFloat(
+          (e.pageY - this._offset.y).toFixed(2) * this._screenScale // gestureState.y0
+        ),
+      ]
+    );
+    const x = parseFloat((e.pageX - this._offset.x).toFixed(2)), // gestureState.x0
+      y = parseFloat((e.pageY - this._offset.y).toFixed(2)); // gestureState.y0
+    this._path.data.push(`${x},${y}`);
+  }
+
   createPath(e) {
     this._offset = { x: e.pageX - e.locationX, y: e.pageY - e.locationY };
     this._path = {
@@ -433,7 +468,6 @@ class SketchCanvas extends React.Component {
         }}
         style={this.props.style}
         onLayout={(e) => {
-          console.log("RNSketchCanvas", e.nativeEvent, e.nativeEvent.layout);
           this._size = {
             width: e.nativeEvent.layout.width,
             height: e.nativeEvent.layout.height,
