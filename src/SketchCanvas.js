@@ -433,7 +433,7 @@ class SketchCanvas extends React.Component {
         }}
         style={this.props.style}
         onLayout={(e) => {
-          console.log("RNSketchCanvas", e);
+          console.log("RNSketchCanvas", e.nativeEvent, e.nativeEvent.layout);
           this._size = {
             width: e.nativeEvent.layout.width,
             height: e.nativeEvent.layout.height,
