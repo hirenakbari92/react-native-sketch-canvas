@@ -465,6 +465,10 @@ class SketchCanvas extends React.Component {
       <RNSketchCanvas
         ref={(ref) => {
           this._handle = ReactNative.findNodeHandle(ref);
+          console.log(
+            "ReactNative.findNodeHandle(ref)",
+            ReactNative.findNodeHandle(ref)
+          );
         }}
         style={this.props.style}
         onLayout={(e) => {
