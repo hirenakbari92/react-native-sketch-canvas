@@ -121,8 +121,8 @@
         CGContextSetLineCap(context, kCGLineCapRound);
         CGContextSetLineJoin(context, kCGLineJoinRound);
         CGContextSetStrokeColorWithColor(context, [_strokeColor CGColor]);
-        // CGContextSetBlendMode(context, kCGBlendModeNormal);
-        CGContextSetBlendMode(context, kCGBlendModeClear);
+        CGContextSetBlendMode(context, kCGBlendModeNormal);
+        // CGContextSetBlendMode(context, kCGBlendModeClear);
         
         CGContextAddPath(context, _path.CGPath);
         CGContextStrokePath(context);
@@ -146,8 +146,8 @@
     CGContextSetLineWidth(context, _strokeWidth);
     CGContextSetLineCap(context, kCGLineCapRound);
     CGContextSetLineJoin(context, kCGLineJoinRound);
-    //CGContextSetBlendMode(context, isErase ? kCGBlendModeClear : kCGBlendModeNormal);
-    CGContextSetBlendMode(context, isErase ? kCGBlendModeClear : kCGBlendModeClear);
+    CGContextSetBlendMode(context, isErase ? kCGBlendModeClear : kCGBlendModeNormal);
+    // CGContextSetBlendMode(context, isErase ? kCGBlendModeClear : kCGBlendModeClear);
     CGContextBeginPath(context);
 
     if (pointsCount >= 3 && pointIndex >= 2) {
