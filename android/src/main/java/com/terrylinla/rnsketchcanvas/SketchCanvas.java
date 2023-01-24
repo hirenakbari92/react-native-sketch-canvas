@@ -198,7 +198,7 @@ public class SketchCanvas extends View {
         Rect updateRect = mCurrentPath.addPoint(new PointF(x, y));
 
         if (mCurrentPath.isTranslucent) {
-            mTranslucentDrawingCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.MULTIPLY);
+            mTranslucentDrawingCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.SRC_OVER);
             mCurrentPath.draw(mTranslucentDrawingCanvas);
         } else {
             mCurrentPath.drawLastPoint(mDrawingCanvas);
@@ -248,7 +248,7 @@ public class SketchCanvas extends View {
         if (mCurrentPath != null) {
             if (mCurrentPath.isTranslucent) {
                 mCurrentPath.draw(mDrawingCanvas);
-                mTranslucentDrawingCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.MULTIPLY);
+                mTranslucentDrawingCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.SRC_OVER);
             }
             mCurrentPath = null;
         }
@@ -337,7 +337,7 @@ public class SketchCanvas extends View {
         super.onDraw(canvas);
 
         if (mNeedsFullRedraw && mDrawingCanvas != null) {
-            mDrawingCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.MULTIPLY);
+            mDrawingCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.SRC_OVER);
             for(SketchData path: mPaths) {
                 path.draw(mDrawingCanvas);
             }
