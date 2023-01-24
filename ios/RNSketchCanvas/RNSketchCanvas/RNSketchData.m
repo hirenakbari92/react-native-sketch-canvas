@@ -121,7 +121,8 @@
         CGContextSetLineCap(context, kCGLineCapRound);
         CGContextSetLineJoin(context, kCGLineJoinRound);
         CGContextSetStrokeColorWithColor(context, [_strokeColor CGColor]);
-        CGContextSetBlendMode(context, kCGBlendModeNormal);
+        // CGContextSetBlendMode(context, kCGBlendModeNormal);
+        CGContextSetBlendMode(context, kCGBlendModeClear);
         
         CGContextAddPath(context, _path.CGPath);
         CGContextStrokePath(context);
