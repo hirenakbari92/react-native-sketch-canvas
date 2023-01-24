@@ -145,7 +145,8 @@
     CGContextSetLineWidth(context, _strokeWidth);
     CGContextSetLineCap(context, kCGLineCapRound);
     CGContextSetLineJoin(context, kCGLineJoinRound);
-    CGContextSetBlendMode(context, isErase ? kCGBlendModeClear : kCGBlendModeNormal);
+    //CGContextSetBlendMode(context, isErase ? kCGBlendModeClear : kCGBlendModeNormal);
+    CGContextSetBlendMode(context, isErase ? kCGBlendModeClear : kCGBlendModeClear);
     CGContextBeginPath(context);
 
     if (pointsCount >= 3 && pointIndex >= 2) {
